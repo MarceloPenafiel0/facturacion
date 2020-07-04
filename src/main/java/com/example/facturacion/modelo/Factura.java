@@ -1,6 +1,7 @@
 package com.example.facturacion.modelo;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name ="factura")
@@ -9,15 +10,31 @@ public class Factura {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column (name="idFactura")
     private int id;
+
+    @Column (name = "idPaciente")
+    private int idPaciente;
     @Column (name="fechaEmision")
     private String fechaEmision;
     @Column (name = "numeroFactura")
     private String numeroFactura;
     @Column (name = "estado")
     private String estado;
+    @Column (name="idAtencion")
+    private int idAtencion;
     @ManyToOne
     @JoinColumn(name = "personaId")
     private Persona persona;
+    @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cargo> cargos;
+
+    public List<Cargo> getCargos() {
+        return cargos;
+    }
+
+    public void setCargos(List<Cargo> cargos) {
+        this.cargos = cargos;
+    }
+
 
     public int getId() {
         return id;
@@ -57,5 +74,21 @@ public class Factura {
 
     public void setPersona(Persona persona) {
         this.persona = persona;
+    }
+
+    public int getIdPaciente() {
+        return idPaciente;
+    }
+
+    public void setIdPaciente(int idPaciente) {
+        this.idPaciente = idPaciente;
+    }
+
+    public int getIdAtencion() {
+        return idAtencion;
+    }
+
+    public void setIdAtencion(int idAtencion) {
+        this.idAtencion = idAtencion;
     }
 }
