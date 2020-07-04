@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-@Controller
+@RestController
 @RequestMapping("/api/cargos")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorCargos {
@@ -30,6 +30,7 @@ public class ControladorCargos {
             factura.setEstado("GENERADA");
             factura.setIdAtencion(cargo.getIdAtencion());
             //factura.addCargo(cargo);
+            cargo.setFactura(factura);
             facturaRepositorio.save(factura);
 
         }
@@ -38,8 +39,8 @@ public class ControladorCargos {
         return cargoRepositorio.save(cargo);
 
     }
-    @GetMapping("{idAtencion}")
-    public Cargo getByIdAtencion(@PathVariable(value ="idAtencion" )Integer idAtencion){
+    @GetMapping("/{idAtencion}")
+    public Iterable<Cargo> getByIdAtencion(@PathVariable(value ="idAtencion" )Integer idAtencion){
         return cargoRepositorio.findByIdAtencion(idAtencion);
     }
 

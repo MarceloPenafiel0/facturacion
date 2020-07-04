@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-@Controller
+@RestController
 @RequestMapping("api/persona")
 public class ControladorPersonas {
     @Autowired
@@ -18,7 +18,7 @@ public class ControladorPersonas {
     public void guardar(@RequestBody Persona persona){
         personaRepositorio.save(persona);
     }
-    @GetMapping("{cedula}")
+    @GetMapping("/{cedula}")
     public Persona getByCedula(@PathVariable(value="cedula")String cedula){
         return personaRepositorio.findByCedula(cedula);
     }
