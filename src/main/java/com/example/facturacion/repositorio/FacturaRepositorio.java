@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface FacturaRepositorio extends JpaRepository<Factura,Integer> {
-    @Query(value="select * from factura  where factura.idAtencion=?1",nativeQuery=true)
+    @Query(value="select * from factura  where factura.id_Atencion=?1",nativeQuery=true)
     Factura findByIdAtencion(Integer idAtencion);
 }

@@ -7,13 +7,12 @@ import com.example.facturacion.repositorio.CargoRepositorio;
 import com.example.facturacion.repositorio.FacturaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
 @RequestMapping("/api/cargos")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorCargos {
     //cuando llegue un primer cargo se debe crear una factura
     //vacia
@@ -30,7 +29,7 @@ public class ControladorCargos {
             factura.setIdPaciente(cargo.getIdPaciente());
             factura.setEstado("GENERADA");
             factura.setIdAtencion(cargo.getIdAtencion());
-            factura.addCargo(cargo);
+            //factura.addCargo(cargo);
             facturaRepositorio.save(factura);
 
         }
@@ -38,6 +37,10 @@ public class ControladorCargos {
         //luego aqui mismo tenemos que tontear con la clave pendeja esa
         return cargoRepositorio.save(cargo);
 
+    }
+    @GetMapping("{idAtencion}")
+    public Cargo getByIdAtencion(@PathVariable(value ="idAtencion" )Integer idAtencion){
+        return cargoRepositorio.findByIdAtencion(idAtencion);
     }
 
 

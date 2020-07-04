@@ -3,7 +3,7 @@ package com.example.facturacion.modelo;
 import javax.persistence.*;
 
 @Entity
-@Table(name ="factura")
+@Table(name ="cargo")
 public class Cargo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,12 +15,12 @@ public class Cargo {
     private int idPaciente;
     @Column (name = "descripcion")
     private String descripcion;
-    @Column (name = "cantidad")
+    @Column (name = "valor")
     private float valor;
     @Column (name="cantidad")
     private int cantidad;
     @ManyToOne
-    @JoinColumn(name = "idfactura")
+    @JoinColumn(name = "idFactura")
     private Factura factura;
 
     public Factura getFactura() {
