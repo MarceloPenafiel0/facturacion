@@ -30,6 +30,7 @@ public class ControladorCargos {
             factura.setIdPaciente(cargo.getIdPaciente());
             factura.setEstado("GENERADA");
             factura.setIdAtencion(cargo.getIdAtencion());
+            factura.addCargo(cargo);
             facturaRepositorio.save(factura);
 
         }
