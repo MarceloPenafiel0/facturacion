@@ -34,10 +34,6 @@ public class Factura {
     public void setCargos(List<Cargo> cargos) {
         this.cargos = cargos;
     }
-    public void addCargo(Cargo cargo){ //esto es lo que sospecho no va a valer
-        cargos.add(cargo);
-    }
-
 
     public int getId() {
         return id;

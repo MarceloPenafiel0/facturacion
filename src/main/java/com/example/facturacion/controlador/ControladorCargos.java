@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/cargos")
@@ -26,13 +29,19 @@ public class ControladorCargos {
 
             //si no existe se agrega tambien una factura
             Factura factura= new Factura();
+            List<Cargo> cargos=new ArrayList<Cargo>();
             factura.setIdPaciente(cargo.getIdPaciente());
             factura.setEstado("GENERADA");
             factura.setIdAtencion(cargo.getIdAtencion());
-            //factura.addCargo(cargo);
+            //cargos.add(cargo);
+            //factura.setCargos(cargos); // este par de huevadas da una excepcion porque json se comporta idiota
             cargo.setFactura(factura);
             facturaRepositorio.save(factura);
 
+        }else{
+            Factura factura=facturaRepositorio.findByIdAtencion(cargo.getIdAtencion());
+            cargo.setFactura(factura);
+            facturaRepositorio.save(factura); // se hace un verguero el json
         }
         //ya existe esa factura y se agrega sin mayor misterio
         //luego aqui mismo tenemos que tontear con la clave pendeja esa
