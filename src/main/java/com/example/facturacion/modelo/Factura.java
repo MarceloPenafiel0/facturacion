@@ -1,6 +1,10 @@
 package com.example.facturacion.modelo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,11 +25,51 @@ public class Factura {
     private String estado;
     @Column (name="idAtencion")
     private int idAtencion;
-    @ManyToOne
+
+    @Column (name = "total")
+    private  float total;
+
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "personaId")
     private Persona persona;
+
     @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Cargo> cargos;
+
+    @Override
+    public int hashCode() {
+        int base=73;    //Numero de Sheldon
+        return base+this.id+this.idPaciente+this.fechaEmision.hashCode()+this.numeroFactura.hashCode()+this.estado.hashCode()
+                +this.idAtencion+(int)this.total;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Factura )) return false;
+        Factura other = (Factura) obj;
+        return this.id == other.getId() && this.idAtencion == other.getIdAtencion() && this.idPaciente == other.getIdPaciente()
+                && this.numeroFactura.equals(other.getNumeroFactura()) && this.estado.equals(other.getEstado())
+                && this.total ==  other.getTotal() && this.fechaEmision.equals(other.getFechaEmision());
+    }
+
+    public void addCargo(Cargo cargo){
+        this.cargos.add(cargo);
+        cargo.setFactura(this);
+    }
+
+    public Factura (){
+        this.cargos = new ArrayList<>();
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
 
     public List<Cargo> getCargos() {
         return cargos;

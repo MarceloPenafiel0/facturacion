@@ -1,6 +1,10 @@
 package com.example.facturacion.modelo;
 
+import com.fasterxml.jackson.annotation.*;
+import org.glassfish.jersey.internal.util.collection.Views;
+
 import javax.persistence.*;
+import javax.swing.text.View;
 
 @Entity
 @Table(name ="cargo")
@@ -19,9 +23,26 @@ public class Cargo {
     private float valor;
     @Column (name="cantidad")
     private int cantidad;
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "idFactura")
+    @JsonBackReference
     private Factura factura;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Cargo )) return false;
+        Cargo other = (Cargo) obj;
+        return this.id == other.getId() && this.idAtencion == other.getIdAtencion() && this.idPaciente == other.getIdPaciente()
+                && this.descripcion.equals(other.getDescripcion()) && this.valor==other.getValor()
+                && this.cantidad ==  other.getCantidad();
+    }
+
+    @Override
+    public int hashCode() {
+        int base = 7;   //Suma de 1 y 6 (Numeros dados por Seaman).
+        return base+this.id+this.idAtencion+this.idPaciente+this.descripcion.hashCode()+(int)this.valor+this.cantidad;
+    }
 
     public Factura getFactura() {
         return factura;

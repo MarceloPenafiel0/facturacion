@@ -29,23 +29,27 @@ public class ControladorCargos {
 
             //si no existe se agrega tambien una factura
             Factura factura= new Factura();
-            List<Cargo> cargos=new ArrayList<Cargo>();
             factura.setIdPaciente(cargo.getIdPaciente());
-            factura.setEstado("GENERADA");
+            factura.setEstado("ABIERTA");   //En la presentacion de interciclo el inge pidio cambio en el nombre de los estados
             factura.setIdAtencion(cargo.getIdAtencion());
+            factura.addCargo(cargo);
             //cargos.add(cargo);
             //factura.setCargos(cargos); // este par de huevadas da una excepcion porque json se comporta idiota
-            cargo.setFactura(factura);
+            //cargo.setFactura(factura);
             facturaRepositorio.save(factura);
 
         }else{
             Factura factura=facturaRepositorio.findByIdAtencion(cargo.getIdAtencion());
-            cargo.setFactura(factura);
-            facturaRepositorio.save(factura); // se hace un verguero el json
+            factura.addCargo(cargo);
+            facturaRepositorio.save(factura); // se hace un verguero el json -> Update 07/05/20: Se arreglo el json pero no devuelve la informacion dela factura
         }
         //ya existe esa factura y se agrega sin mayor misterio
         //luego aqui mismo tenemos que tontear con la clave pendeja esa
-        return cargoRepositorio.save(cargo);
+
+        //Solucion temporal, aqui deberiamos buscar por el ID codificado
+        Cargo dummy = cargoRepositorio.findById(7).orElse(new Cargo());
+        System.out.println("Saved " + dummy.getFactura().getId());
+        return dummy;
 
     }
     @GetMapping("/{idAtencion}")

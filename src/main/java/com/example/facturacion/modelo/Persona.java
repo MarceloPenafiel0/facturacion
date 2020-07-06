@@ -1,7 +1,7 @@
 package com.example.facturacion.modelo;
 
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,6 +19,7 @@ public class Persona {
     private String telefono;
     @Column (name = "correo")
     private String correo;
+
     @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Factura> facturas;//no deja arraylist no se porque
 

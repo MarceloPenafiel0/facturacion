@@ -18,6 +18,7 @@ public class ControladorPersonas {
     public void guardar(@RequestBody Persona persona){
         personaRepositorio.save(persona);
     }
+
     @GetMapping("/{cedula}")
     public Persona getByCedula(@PathVariable(value="cedula")String cedula){
         return personaRepositorio.findByCedula(cedula);
