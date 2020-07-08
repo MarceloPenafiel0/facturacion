@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.swing.text.View;
 
 @Entity
-@Table(name ="cargo")
+@Table(name ="cargo", indexes = { @Index(name = "indiceAtencion", columnList = "idAtencion") })
 public class Cargo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

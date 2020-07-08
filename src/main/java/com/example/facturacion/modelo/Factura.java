@@ -1,6 +1,5 @@
 package com.example.facturacion.modelo;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -20,7 +19,7 @@ public class Factura {
     @Column (name="fechaEmision")
     private String fechaEmision;
     @Column (name = "numeroFactura")
-    private String numeroFactura;
+    private int numeroFactura;
     @Column (name = "estado")
     private String estado;
     @Column (name="idAtencion")
@@ -40,7 +39,7 @@ public class Factura {
     @Override
     public int hashCode() {
         int base=73;    //Numero de Sheldon
-        return base+this.id+this.idPaciente+this.fechaEmision.hashCode()+this.numeroFactura.hashCode()+this.estado.hashCode()
+        return base+this.id+this.idPaciente+this.fechaEmision.hashCode()+this.numeroFactura+this.estado.hashCode()
                 +this.idAtencion+(int)this.total;
     }
 
@@ -50,7 +49,7 @@ public class Factura {
         if (!(obj instanceof Factura )) return false;
         Factura other = (Factura) obj;
         return this.id == other.getId() && this.idAtencion == other.getIdAtencion() && this.idPaciente == other.getIdPaciente()
-                && this.numeroFactura.equals(other.getNumeroFactura()) && this.estado.equals(other.getEstado())
+                && this.numeroFactura==other.numeroFactura && this.estado.equals(other.getEstado())
                 && this.total ==  other.getTotal() && this.fechaEmision.equals(other.getFechaEmision());
     }
 
@@ -95,11 +94,11 @@ public class Factura {
         this.fechaEmision = fechaEmision;
     }
 
-    public String getNumeroFactura() {
+    public int getNumeroFactura() {
         return numeroFactura;
     }
 
-    public void setNumeroFactura(String numeroFactura) {
+    public void setNumeroFactura(int numeroFactura) {
         this.numeroFactura = numeroFactura;
     }
 

@@ -46,7 +46,7 @@ public class ControladorCargos {
         //luego aqui mismo tenemos que tontear con la clave pendeja esa
 
         //Solucion temporal, aqui deberiamos buscar por el ID codificado
-        Cargo dummy = cargoRepositorio.findById(7).orElse(new Cargo());
+        Cargo dummy = cargoRepositorio.findById(35).orElse(new Cargo());
         System.out.println("Saved " + dummy.getFactura().getId());
         return dummy;
 
