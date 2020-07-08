@@ -6,11 +6,10 @@ import com.example.facturacion.modelo.Factura;
 import com.example.facturacion.repositorio.CargoRepositorio;
 import com.example.facturacion.repositorio.FacturaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 @RestController
@@ -56,6 +55,19 @@ public class ControladorCargos {
     public Iterable<Cargo> getByIdAtencion(@PathVariable(value ="idAtencion" )Integer idAtencion){
         return cargoRepositorio.findByIdAtencion(idAtencion);
     }
+
+    @PostMapping("/test")
+    public Map<String,Object> testCustomJson(@RequestBody Map<String,Object> payload){
+        for (String key: payload.keySet()) {
+            System.out.println("---- "+payload.get(key).getClass());
+            System.out.println("**** "+"Key= "+key+"    Value= "+payload.get(key).toString());
+        }
+        Map<String,Object> dummy = new LinkedHashMap<>();
+        dummy.put("food","lasagna");
+        dummy.put("animal","ostrish");
+        return dummy;
+    }
+
 
 
 }
