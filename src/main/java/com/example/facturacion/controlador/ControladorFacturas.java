@@ -16,6 +16,10 @@ public class ControladorFacturas {
     public Factura buscarIdatencion(@PathVariable(value = "idAtencion")Integer idAtencion){
         return facturaRepositorio.findByIdAtencion(idAtencion);
     }
+    @GetMapping("/idpaciente/{idPaciente}")//vale para consultar el estado también
+    public Iterable<Factura> buscarIdpaciente(@PathVariable(value = "idPaciente")Integer idPaciente){
+        return facturaRepositorio.findByIdPaciente(idPaciente);
+    }
     @GetMapping("/estado/{estado}")
     public Iterable<Factura> getByEstado(@PathVariable(value = "estado")String estado){
         return facturaRepositorio.findByEstado(estado);

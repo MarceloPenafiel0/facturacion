@@ -16,4 +16,7 @@ public interface FacturaRepositorio extends JpaRepository<Factura,Integer> {
 
     @Query(value="select * from factura  where factura.numero_factura=?1",nativeQuery=true)
     Factura findByNumeroFactura(Integer numeroFactura);
+
+    @Query(value="select * from factura  where factura.id_paciente=?1",nativeQuery=true)
+    Iterable<Factura> findByIdPaciente(Integer idpaciente);
 }
