@@ -14,7 +14,6 @@ public class Factura {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column (name="idFactura")
     private int id;
-
     @Column (name = "idPaciente")
     private int idPaciente;
     @Column (name="fechaEmision")
@@ -25,9 +24,8 @@ public class Factura {
     private String estado;
     @Column (name="idAtencion")
     private int idAtencion;
-
     @Column (name = "total")
-    private  float total;
+    private  double total;
 
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "personaId")
@@ -63,11 +61,11 @@ public class Factura {
         this.cargos = new ArrayList<>();
     }
 
-    public float getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
