@@ -7,6 +7,7 @@ import com.example.facturacion.repositorio.CargoRepositorio;
 import com.example.facturacion.repositorio.FacturaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,6 +26,8 @@ public class ControladorCargos {
     CargoRepositorio cargoRepositorio;
     @Autowired
     FacturaRepositorio facturaRepositorio;
+
+    @Transactional
     @PostMapping
     public Cargo guardar(@RequestBody Map<String,Object> mapedJson){
         Cargo cargo =  new Cargo(mapedJson); // Lanza excepcion en el caso que el json tenga algo mal
