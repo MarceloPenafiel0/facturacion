@@ -19,8 +19,28 @@ public class ControladorPersonas {
         personaRepositorio.save(persona);
     }
 
+    @GetMapping //para listar en la tablita
+    public Iterable<Persona> getTodos(){
+        return personaRepositorio.findAll();
+    }
+
     @GetMapping("/{cedula}")
     public Persona getByCedula(@PathVariable(value="cedula")String cedula){
-        return personaRepositorio.findByCedula(cedula);
+
+        if (personaRepositorio.findByCedula(cedula)!=null){
+            return personaRepositorio.findByCedula(cedula);
+        }else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Persona no Encontrada");
+        }
+    }
+
+    @DeleteMapping("/{cedula}")
+    public void borrarPersona(@PathVariable(value = "cedula")String cedula){
+        if (personaRepositorio.findByCedula(cedula)!=null){
+            personaRepositorio.delete(personaRepositorio.findByCedula(cedula));
+        }else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Persona no Encontrada");
+        }
+
     }
 }

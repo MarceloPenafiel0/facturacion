@@ -6,8 +6,11 @@ import com.example.facturacion.modelo.Factura;
 import com.example.facturacion.repositorio.CargoRepositorio;
 import com.example.facturacion.repositorio.FacturaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -41,6 +44,28 @@ public class ControladorCargos {
         facturaRepositorio.save(factura);
         System.out.println("****** "+cargo.getId());
         return cargo;
+    }
+
+    @PutMapping
+    public void actualizar(@RequestBody Map<String,Object> mapedJson){
+        Cargo cargo =  new Cargo(mapedJson);
+        if(cargoRepositorio.findById(cargo.getId()).isPresent()){
+            Factura factura =facturaRepositorio.findByIdAtencion(cargo.getIdAtencion());
+            factura.addCargo(cargo);
+            facturaRepositorio.save(factura);
+        }else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cargo no encontrado");
+        }
+    }
+    @DeleteMapping("/{idAtencion}/{idPaciente}/{modulo}/{tabla}/{idExterno}")
+    public void borrar(@PathVariable(value = "modulo") String modulo, @PathVariable(value = "tabla")String tabla, @PathVariable(value = "idExterno")String idExterno, @PathVariable(value = "idAtencion")Integer idAtencion, @PathVariable(value = "idPaciente")Integer idPaciente){
+        int number = Integer.parseInt(idExterno)+(666%(idAtencion+idPaciente));
+        String id_cargo=modulo+tabla+number;
+        if(cargoRepositorio.findById(id_cargo).isPresent()){
+            cargoRepositorio.delete(cargoRepositorio.findById(id_cargo).get());
+        }else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cargo no encontrado");
+        }
     }
     @GetMapping("/{idAtencion}")
     public Iterable<Cargo> getByIdAtencion(@PathVariable(value ="idAtencion" )Integer idAtencion){
