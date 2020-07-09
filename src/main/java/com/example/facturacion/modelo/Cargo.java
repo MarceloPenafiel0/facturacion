@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-@Table(name ="cargo")
+@Table(name ="cargo", indexes = { @Index(name = "indiceAtencion", columnList = "idAtencion") })
 public class Cargo {
     @Id
     @Column (name="idCargo")
