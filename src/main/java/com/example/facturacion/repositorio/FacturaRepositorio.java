@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.repository.query.Param;
 
 import javax.persistence.LockModeType;
 import javax.persistence.QueryHint;
@@ -27,9 +28,9 @@ public interface FacturaRepositorio extends JpaRepository<Factura,Integer> {
     Iterable<Factura> findByIdPaciente(Integer idpaciente);
 
     //@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="-2")})
-    //@Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query(value="select f from factura f where f.id_Atencion=?1",nativeQuery = true)
-    Factura lockFindByIdAtencion(Integer idAtencion);
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query(value="select f from Factura f where f.idAtencion= :idAten")
+    Factura lockFindByIdAtencion(@Param("idAten") Integer idAtencion);
 
     @Query(value = "select count (*) from factura where factura.estado!=?1 ",nativeQuery = true)
     Integer countDistinctByEstado(String estado);

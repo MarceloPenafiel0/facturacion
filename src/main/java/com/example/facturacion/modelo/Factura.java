@@ -43,7 +43,10 @@ public class Factura {
     @Override
     public int hashCode() {
         int base=73;    //Numero de Sheldon
-        return base+this.id+this.idPaciente+this.fechaEmision.hashCode()+this.numeroFactura+this.estado.hashCode()
+        int hashDate=0;
+        if (this.fechaEmision != null)
+            hashDate=this.fechaEmision.hashCode();
+        return base+this.id+this.idPaciente+hashDate+this.numeroFactura+this.estado.hashCode()
                 +this.idAtencion+(int)this.total;
     }
 

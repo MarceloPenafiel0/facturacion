@@ -1,6 +1,7 @@
 package com.example.facturacion.controlador;
 
 
+import com.example.facturacion.exceptions.IllegalChargeOperationException;
 import com.example.facturacion.modelo.Cargo;
 import com.example.facturacion.modelo.Factura;
 import com.example.facturacion.repositorio.CargoRepositorio;
@@ -41,9 +42,11 @@ public class ControladorCargos {
             factura.setEstado("ABIERTA");   //En la presentacion de interciclo el inge pidio cambio en el nombre de los estados
             factura.setIdAtencion(cargo.getIdAtencion());
             factura.addCargo(cargo);
-        }else{
+        }else if (factura.getEstado()=="ABIERTA"){
             factura.addCargo(cargo);
             //facturaRepositorio.save(factura); // se hace un verguero el json -> Update 07/05/20: Se arreglo el json pero no devuelve la informacion dela factura
+        }else{
+            throw new IllegalChargeOperationException();
         }
         //ya existe esa factura y se agrega sin mayor misterio
         facturaRepositorio.save(factura);

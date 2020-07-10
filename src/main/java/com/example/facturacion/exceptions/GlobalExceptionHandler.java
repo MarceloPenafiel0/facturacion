@@ -30,4 +30,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(IllegalChargeOperationException.class)
+    public ResponseEntity<Object> handleIllegalCargeOperation(IllegalChargeOperationException ex, WebRequest request){
+        Map<String,Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message","Operacion no de Cargo Permitida");
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
 }

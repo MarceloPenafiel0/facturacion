@@ -57,6 +57,8 @@ public class ControladorFacturas {
         System.out.println("**** "+mapedJson.get("idAtencion"));
         System.out.println("---- "+mapedJson.get("idPersona"));
         Factura factura = facturaRepositorio.lockFindByIdAtencion((int)mapedJson.get("idAtencion"));
+        //String factura = facturaRepositorio.lockFindByIdAtencion((int)mapedJson.get("idAtencion"));
+        System.out.println("-*-*-*-"+factura);
         int numeroFactura = facturaRepositorio.countDistinctByEstado("ABIERTA");
         factura.setNumeroFactura(numeroFactura+1);
         Iterable<Cargo> cargos = cargoRepositorio.findByIdAtencion(factura.getIdAtencion());
