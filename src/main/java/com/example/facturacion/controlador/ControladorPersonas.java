@@ -16,8 +16,10 @@ public class ControladorPersonas {
     PersonaRepositorio personaRepositorio;
 
     @PostMapping
-    public void guardar(@RequestBody Persona persona){
+    public Persona guardar(@RequestBody Persona persona){
+        System.out.println(persona.getNombre());
         personaRepositorio.save(persona);
+        return persona;
     }
 
     @GetMapping //para listar en la tablita

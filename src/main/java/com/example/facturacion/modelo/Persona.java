@@ -1,6 +1,8 @@
 package com.example.facturacion.modelo;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class Persona {
     private String correo;
 
     @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Factura> facturas;//no deja arraylist no se porque
 
     public List<Factura> getFacturas() {

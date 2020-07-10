@@ -1,5 +1,6 @@
 package com.example.facturacion.modelo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ public class Factura {
     private int idPaciente;
     @Column (name="fechaEmision")
     private String fechaEmision;
-    @Column (name = "numeroFactura")
+    @Column (name = "numeroFactura", columnDefinition = "integer default 0")
     private int numeroFactura;
     @Column (name = "estado")
     private String estado;
@@ -28,11 +29,16 @@ public class Factura {
 
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "personaId")
+    @JsonBackReference
     private Persona persona;
 
     @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Cargo> cargos;
+
+    public Factura(){
+
+    }
 
     @Override
     public int hashCode() {
@@ -56,8 +62,8 @@ public class Factura {
         cargo.setFactura(this);
     }
 
-    public Factura (){
-        this.cargos = new ArrayList<>();
+    public Factura (ArrayList cargos){
+        this.cargos = cargos;
     }
 
     public double getTotal() {
