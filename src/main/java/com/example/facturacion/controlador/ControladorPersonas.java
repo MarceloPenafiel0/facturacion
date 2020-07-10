@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("api/persona")
+@RequestMapping("/api/persona")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorPersonas {
     @Autowired
     PersonaRepositorio personaRepositorio;
