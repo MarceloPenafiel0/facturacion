@@ -52,7 +52,7 @@ public class ControladorFacturas {
     }
 
     @Transactional
-    @PutMapping("/emitir/")
+    @PutMapping("/emitir")
     public Factura emitirFactura(@RequestBody Map<String,Object> mapedJson){
         System.out.println("**** "+mapedJson.get("idAtencion"));
         System.out.println("---- "+mapedJson.get("idPersona"));
