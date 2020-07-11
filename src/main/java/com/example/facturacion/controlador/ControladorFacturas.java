@@ -61,6 +61,18 @@ public class ControladorFacturas {
         return factura1.toMap();//si es con la misma clave solo actualiza
     }
 
+    //Actualizacion de estado
+    @PutMapping("/actualizar/estado/{idFactura}")
+    public Map<String,Object> actualizarEstado(@PathVariable (value = "idFactura") Integer idFactura,
+                                               @RequestBody Map<String,Object> mapedJson){
+        System.out.println(idFactura);
+        System.out.println(mapedJson.get("estado"));
+        Factura factura = facturaRepositorio.findById(idFactura).get();
+        factura.setEstado(mapedJson.get("estado").toString());
+        factura = facturaRepositorio.save(factura);
+        return factura.toMap();
+    }
+
     @Transactional
     @PutMapping("/emitir")
     public Map<String,Object> emitirFactura(@RequestBody Map<String,Object> mapedJson){

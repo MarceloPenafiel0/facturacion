@@ -42,7 +42,7 @@ public class ControladorCargos {
             factura.setEstado("ABIERTA");   //En la presentacion de interciclo el inge pidio cambio en el nombre de los estados
             factura.setIdAtencion(cargo.getIdAtencion());
             factura.addCargo(cargo);
-        }else if (factura.getEstado()=="ABIERTA"){
+        }else if (factura.getEstado().equals("ABIERTA")){
             factura.addCargo(cargo);
             //facturaRepositorio.save(factura); // se hace un verguero el json -> Update 07/05/20: Se arreglo el json pero no devuelve la informacion dela factura
         }else{
