@@ -77,7 +77,10 @@ public class Factura {
         map.put("idAtencion",this.idAtencion);
         map.put("total",this.total);
         map.put("cargos",this.cargos);
-        map.put("persona",this.persona.getCedula());
+        if (this.persona!=null)
+            map.put("persona",this.persona.getCedula());
+        else
+            map.put("persona","No asignada");
         return map;
     }
 
