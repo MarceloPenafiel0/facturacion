@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
@@ -26,34 +27,43 @@ public class ControladorFacturas {
     PersonaRepositorio personaRepositorio;
 
     @GetMapping("/idatencion/{idAtencion}")//vale para consultar el estado también
-    public Factura buscarIdatencion(@PathVariable(value = "idAtencion")Integer idAtencion){
-        return facturaRepositorio.findByIdAtencion(idAtencion);
+    public Map<String,Object> buscarIdatencion(@PathVariable(value = "idAtencion")Integer idAtencion){
+        Factura factura = facturaRepositorio.findByIdAtencion(idAtencion);
+        return factura.toMap();
     }
     @GetMapping("/idpaciente/{idPaciente}")//vale para consultar el estado también
-    public Iterable<Factura> buscarIdpaciente(@PathVariable(value = "idPaciente")Integer idPaciente){
-        return facturaRepositorio.findByIdPaciente(idPaciente);
+    public Iterable<Map<String,Object>> buscarIdpaciente(@PathVariable(value = "idPaciente")Integer idPaciente){
+        Iterable<Factura> facturaList = facturaRepositorio.findByIdPaciente(idPaciente);
+        Iterable<Map<String,Object>> mapList = mapIterable(facturaList);
+        return mapList;
     }
     @GetMapping("/estado/{estado}")
-    public Iterable<Factura> getByEstado(@PathVariable(value = "estado")String estado){
-        return facturaRepositorio.findByEstado(estado);
+    public Iterable<Map<String,Object>>  getByEstado(@PathVariable(value = "estado")String estado){
+        Iterable<Factura> facturaList = facturaRepositorio.findByEstado(estado);
+        Iterable<Map<String,Object>> mapList = mapIterable(facturaList);
+        return mapList;
     }
     @GetMapping("/persona/{persona_id}")
-    public Iterable<Factura> getByEstado(@PathVariable(value = "persona_id")Integer persona_id){
-        return facturaRepositorio.findByPersona(persona_id);
+    public Iterable<Map<String,Object>> getByEstado(@PathVariable(value = "persona_id")Integer persona_id){
+        Iterable<Factura> facturaList = facturaRepositorio.findByPersona(persona_id);
+        Iterable<Map<String,Object>> mapList = mapIterable(facturaList);
+        return mapList;
     }
     @GetMapping("/numeroFactura/{numeroFactura}")
-    public Factura getBynumFactura(@PathVariable(value = "numeroFactura")Integer numeroFactura){
-        return facturaRepositorio.findByNumeroFactura(numeroFactura);
+    public Map<String,Object> getBynumFactura(@PathVariable(value = "numeroFactura")Integer numeroFactura){
+        Factura factura = facturaRepositorio.findByNumeroFactura(numeroFactura);
+        return factura.toMap();
     }
     //actualizar factura por la razon que sea
     @PutMapping("/actualizar") //actualizar por la razón que sea
-    public Factura actualizar(@RequestBody Factura factura){
-        return facturaRepositorio.save(factura);//si es con la misma clave solo actualiza
+    public Map<String,Object> actualizar(@RequestBody Factura factura){
+        Factura factura1 = facturaRepositorio.save(factura);
+        return factura1.toMap();//si es con la misma clave solo actualiza
     }
 
     @Transactional
     @PutMapping("/emitir")
-    public Factura emitirFactura(@RequestBody Map<String,Object> mapedJson){
+    public Map<String,Object> emitirFactura(@RequestBody Map<String,Object> mapedJson){
         System.out.println("**** "+mapedJson.get("idAtencion"));
         System.out.println("---- "+mapedJson.get("idPersona"));
         Factura factura = facturaRepositorio.lockFindByIdAtencion((int)mapedJson.get("idAtencion"));
@@ -74,14 +84,22 @@ public class ControladorFacturas {
         factura.setFechaEmision(dft.format(now));
         factura.setEstado("EMITIDA");
         facturaRepositorio.save(factura);
-        return factura;
+        return factura.toMap();
     }
 
     @PutMapping("/anular/{numeroFactura}")
-    public Factura anularFactura(@PathVariable (value = "numeroFactura") Integer numeroFactura){
+    public Map<String,Object> anularFactura(@PathVariable (value = "numeroFactura") Integer numeroFactura){
         Factura factura = facturaRepositorio.findByNumeroFactura(numeroFactura);
         factura.setEstado("ANULADA");
-        return facturaRepositorio.save(factura);
+        factura = facturaRepositorio.save(factura);
+        return factura.toMap();
     }
 
+    private Iterable<Map<String,Object>> mapIterable (Iterable<Factura> iterable){
+        ArrayList<Map<String, Object>> ite = new ArrayList<>();
+        for (Factura fac: iterable) {
+            ite.add(fac.toMap());
+        }
+        return ite;
+    }
 }

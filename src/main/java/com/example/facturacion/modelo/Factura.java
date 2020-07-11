@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name ="factura")
@@ -63,6 +65,20 @@ public class Factura {
     public void addCargo(Cargo cargo){
         this.cargos.add(cargo);
         cargo.setFactura(this);
+    }
+
+    public Map<String,Object> toMap(){
+        Map<String,Object> map = new LinkedHashMap<>();
+        map.put("id",this.id);
+        map.put("idPaciente",this.idPaciente);
+        map.put("fechaEmision",this.fechaEmision);
+        map.put("numeroFactura",this.numeroFactura);
+        map.put("estado",this.estado);
+        map.put("idAtencion",this.idAtencion);
+        map.put("total",this.total);
+        map.put("cargos",this.cargos);
+        map.put("persona",this.persona.getCedula());
+        return map;
     }
 
     public Factura (ArrayList cargos){
