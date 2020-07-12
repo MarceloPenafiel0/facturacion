@@ -1,5 +1,6 @@
 package com.example.facturacion.controlador;
 
+import com.example.facturacion.exceptions.DataNotFoundException;
 import com.example.facturacion.modelo.Cargo;
 import com.example.facturacion.modelo.Factura;
 import com.example.facturacion.modelo.Persona;
@@ -59,6 +60,19 @@ public class ControladorFacturas {
     public Map<String,Object> actualizar(@RequestBody Factura factura){
         Factura factura1 = facturaRepositorio.save(factura);
         return factura1.toMap();//si es con la misma clave solo actualiza
+    }
+
+    @PutMapping("/actualizar/responsable")
+    public Map<String,Object> actualizarResponsable(@RequestBody Map<String,Object> mapedJason){
+        System.out.println(mapedJason);
+        Factura factura = facturaRepositorio.findByIdAtencion((int)mapedJason.get("idAtencion"));
+        Persona persona = personaRepositorio.findByCedula(mapedJason.get("cedula").toString());
+        if (persona == null){
+            throw new DataNotFoundException();
+        }
+        factura.setPersona(persona);
+        factura = facturaRepositorio.save(factura);
+        return factura.toMap();
     }
 
     //Actualizacion de estado
